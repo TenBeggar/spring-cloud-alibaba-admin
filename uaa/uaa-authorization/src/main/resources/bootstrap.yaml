@@ -1,0 +1,17 @@
+server:
+  port: 14000
+spring:
+  application:
+    name: uaa
+  profiles:
+    active: dev
+  cloud:
+    nacos:
+      server-addr: 192.168.232.90:8848
+      config:
+        file-extension: yaml
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://192.168.232.50:3306/user?characterEncoding=utf8&connectTimeout=1000&socketTimeout=3000&autoReconnect=true&useUnicode=true&useSSL=false&serverTimezone=UTC
+    username: root
+    password: 76543

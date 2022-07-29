@@ -1,0 +1,51 @@
+server:
+  port: 8080
+spring:
+  application:
+    name: gateway
+  profiles:
+    active: dev
+  cloud:
+    nacos:
+      server-addr: 192.168.232.90:8848
+      config:
+        file-extension: yaml
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+      globalcors:
+        add-to-simple-url-handler-mapping: true
+        cors-configurations:
+          '[/**]':
+            allowedOriginPatterns: "*" #允许的请求地址
+            allowedMethods: #允许的请求方式
+              - "OPTIONS"
+              - "GET"
+              - "POST"
+              - "PUT"
+              - "DELETE"
+            allowedHeaders: "*" #允许的请求头
+            allowCredentials: true #允许cookies
+            maxAge: 43200 #跨域检测有效期，即指定时间内不需要询问是否允许跨域可直接请求
+      routes:
+        - id: uaa
+          uri: lb://uaa
+          predicates:
+            - Path=/uaa/**
+          filters:
+            - StripPrefix=1
+        - id: user
+          uri: lb://user
+          predicates:
+            - Path=/user/**
+          filters:
+            - StripPrefix=1
+springdoc:
+  swagger-ui:
+    use-root-path: true
+    urls:
+      - name: user
+        url: /user/v3/api-docs
+      - name: whale
+        url: /whale/v3/api-docs
